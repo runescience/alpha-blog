@@ -1,12 +1,40 @@
 class ArticlesController < ApplicationController
+  
+  def index
+    @articles = Article.all
+  end
+  
   def new
     @article = Article.new
   end
 
-  def create
-    
-    @article = Article.new(article_params)
+  def edit
+    @article = Article.find(params[:id])
+  end
 
+  def destroy
+  
+  end
+
+  def update
+    @article = Article.find(params[:id])
+    #@article = Article.new(article_params)
+    if @article.update(article_params)
+      #do something
+      flash[:notice] = "article was successfully updated"
+      redirect_to article_path(@article)
+    else
+      # problems
+      render 'edit'
+    end
+  
+   # @article.save
+   # redirect_to articles_path(@article)
+  end
+
+
+  def create
+    @article = Article.new(article_params)
     if @article.save
       #do something
       flash[:notice] = "article was successfully created"
@@ -24,8 +52,6 @@ class ArticlesController < ApplicationController
   def show
     
     @article = Article.find(params[:id])
-    
-    
     
   end
 
